@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Windows Machine",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build: MAUI Windows",
+            "program": "${workspaceFolder}/FIFO Inventory Management System/bin/Debug/net10.0-windows10.0.19041.0/win-x64/FIFOInventoryManagementSystem.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}

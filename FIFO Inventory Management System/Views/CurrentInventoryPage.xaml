@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIFO_Inventory_Management_System.Views.CurrentInventoryPage"
+             Title="Current Inventory Dashboard">
+
+    <Grid RowDefinitions="Auto, *" Padding="30" RowSpacing="20">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto, Auto, Auto" ColumnSpacing="15">
+            <Label Grid.Column="0" Text="Stock Availability Summary" FontSize="24" FontAttributes="Bold" VerticalOptions="Center"/>
+
+            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                <Label Text="Search by PO" FontSize="12" TextColor="Gray"/>
+                <SearchBar x:Name="POSearchBar" 
+                           Placeholder="e.g. PO-001" 
+                           WidthRequest="180" 
+                           TextChanged="OnSearchTextChanged"
+                           BackgroundColor="Transparent"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
+                <Label Text="Filter Status" FontSize="12" TextColor="Gray"/>
+                <Picker x:Name="FilterPicker" WidthRequest="150" SelectedIndexChanged="OnFilterChanged">
+                    <Picker.Items>
+                        <x:String>All Items</x:String>
+                        <x:String>In Stock</x:String>
+                        <x:String>Out of Stock</x:String>
+                    </Picker.Items>
+                </Picker>
+            </VerticalStackLayout>
+
+            <Button Grid.Column="3" Text="↻ Refresh" Clicked="OnRefreshClicked" BackgroundColor="#005A9E" TextColor="White" HeightRequest="40" VerticalOptions="End"/>
+        </Grid>
+
+        <Frame Grid.Row="1" BorderColor="Gray" Padding="0" HasShadow="True" CornerRadius="8">
+            <Grid RowDefinitions="50, *">
+
+                <Grid Grid.Row="0" BackgroundColor="LightGray" ColumnDefinitions="1.2*, 2*, *, *, *, Auto" Padding="15,0">
+                    <Label Text="Item Code" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0"/>
+                    <Label Text="Item Name" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="1"/>
+                    <Label Text="Unit" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="2"/>
+                    <Label Text="Total Qty" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="3"/>
+                    <Label Text="Total Value" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="4"/>
+                    <Label Text="Expand" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="5" TextColor="Transparent"/>
+                </Grid>
+
+                <CollectionView x:Name="InventoryList" Grid.Row="1">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout>
+
+                                <Grid ColumnDefinitions="1.2*, 2*, *, *, *, Auto" Padding="15,15" BackgroundColor="Black">
+
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnInventoryRowTapped" CommandParameter="{Binding .}" />
+                                    </Grid.GestureRecognizers>
+
+                                    <Label Text="{Binding Item_Code}" VerticalOptions="Center" Grid.Column="0"/>
+                                    <Label Text="{Binding Name}" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="1"/>
+                                    <Label Text="{Binding Unit}" VerticalOptions="Center" Grid.Column="2"/>
+
+                                    <Label Text="{Binding TotalQuantity}" FontAttributes="Bold" TextColor="#218838" VerticalOptions="Center" Grid.Column="3"/>
+                                    <Label Text="{Binding FormattedTotalValue}" VerticalOptions="Center" Grid.Column="4"/>
+
+                                    <Label Text="▼" TextColor="#005A9E" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="5" Margin="10,0"/>
+                                </Grid>
+
+                                <StackLayout IsVisible="{Binding IsExpanded}" BackgroundColor="Black" Padding="15,10">
+
+                                    <Label Text="Available Stock by Supplier &amp; PO:" FontAttributes="Bold" FontSize="12" TextColor="DimGray" Margin="0,0,0,10"/>
+
+                                    <Grid ColumnDefinitions="1.5*, 2*, *, 1.5*" Margin="0,0,0,5">
+                                        <Label Grid.Column="0" Text="PO Number" FontSize="11" FontAttributes="Bold" TextColor="Gray"/>
+                                        <Label Grid.Column="1" Text="Supplier Name" FontSize="11" FontAttributes="Bold" TextColor="Gray"/>
+                                        <Label Grid.Column="2" Text="Left in Stock" FontSize="11" FontAttributes="Bold" TextColor="Gray"/>
+                                        <Label Grid.Column="3" Text="Batch Value" FontSize="11" FontAttributes="Bold" TextColor="Gray" HorizontalTextAlignment="End"/>
+                                    </Grid>
+
+                                    <CollectionView ItemsSource="{Binding Batches}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid ColumnDefinitions="1.5*, 2*, *, 1.5*" Margin="0,5">
+                                                    <Label Grid.Column="0" Text="{Binding PONumber}" FontSize="13" TextColor="White"/>
+                                                    <Label Grid.Column="1" Text="{Binding SupplierName}" FontSize="13" FontAttributes="Bold" TextColor="White"/>
+
+                                                    <Label Grid.Column="2">
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <Span Text="{Binding RemainingQuantity}" FontAttributes="Bold" TextColor="#D9534F"/>
+                                                                <Span Text=" units" TextColor="Gray" FontSize="12"/>
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+                                                    </Label>
+
+                                                    <Label Grid.Column="3" Text="{Binding FormattedBatchValue}" FontSize="13" FontAttributes="Bold" TextColor="ForestGreen" HorizontalTextAlignment="End"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+
+                                </StackLayout>
+
+                                <BoxView HeightRequest="1" Color="#E5E7EB"/>
+
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </Frame>
+
+    </Grid>
+</ContentPage>

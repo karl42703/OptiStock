@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="FIFO_Inventory_Management_System.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:FIFO_Inventory_Management_System.Views"
+    Title="FIFO Inventory"
+    FlyoutBehavior="Flyout"
+    Shell.TabBarBackgroundColor="#1B1B1F"
+    Shell.TabBarForegroundColor="#E8E8E8"
+    Shell.TabBarUnselectedColor="#9E9E9E"
+    Shell.FlyoutBackgroundColor="#1b1b1f">
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="20" Spacing="15" BackgroundColor="#1B1B1F">
+
+            <Label x:Name="UserLabel" TextColor="LightGray" FontSize="13" FontAttributes="Bold" />
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Active Branch:" TextColor="LightGray" FontSize="12" />
+                <Picker x:Name="BranchPicker" TextColor="White" TitleColor="Gray" BackgroundColor="#2D2D32" />
+            </VerticalStackLayout>
+
+            <Button Text="Sign out" Clicked="OnLogoutClicked" BackgroundColor="#3A3A42" TextColor="White" FontSize="12" HeightRequest="35" />
+
+            <BoxView HeightRequest="1" Color="#3A3A42" Margin="0,10,0,0" />
+            <!-- A nice divider line -->
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+   
+        <ShellContent
+            x:Name="NavDashboard"
+            Title="Dashboard"
+            Route="CurrentInventoryPage"
+            ContentTemplate="{DataTemplate views:CurrentInventoryPage}" />
+        <ShellContent
+            x:Name="NavWithdraw"
+            Title="Withdraw"
+            Route="IssueStockPage"
+            ContentTemplate="{DataTemplate views:IssueStockPage}" />
+        <ShellContent
+            x:Name="NavReceive"
+            Title="Receive"
+            Route="ReceiveStockPage"
+            ContentTemplate="{DataTemplate views:ReceiveStockPage}" />
+        <ShellContent
+            x:Name="NavTransfer"
+            Title="Transfer"
+            Route="TransferStockPage"
+            ContentTemplate="{DataTemplate views:TransferStockPage}" />
+        <ShellContent
+            x:Name="NavReports"
+            Title="Reports"
+            Route="ReportsPage"
+            ContentTemplate="{DataTemplate views:ReportsPage}" />
+        <ShellContent
+            x:Name="NavLogs"
+            Title="Logs"
+            Route="TransactionLogsPage"
+            ContentTemplate="{DataTemplate views:TransactionLogsPage}" />
+        <ShellContent
+            x:Name="NavSettings"
+            Title="Settings"
+            Route="SettingsPage"
+            ContentTemplate="{DataTemplate views:SettingsPage}" />
+  
+</Shell>

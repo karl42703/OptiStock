@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIFO_Inventory_Management_System.Views.IssueStockPage"
+             Title="Create Withdrawal Batch (RIS)">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+
+            <Label Text="1. RIS Header Details" FontSize="20" FontAttributes="Bold"/>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="15" ColumnSpacing="15">
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                    <Label Text="RIS Number"/>
+                    <Entry x:Name="RisNumberEntry"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                    <Label Text="Date Issued"/>
+                    <DatePicker x:Name="DateIssuedPicker"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Label Text="Requesting Office"/>
+                    <Entry x:Name="OfficeEntry"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="LightGray" Margin="0,10"/>
+
+            <Label Text="2. Add Requested Items" FontSize="20" FontAttributes="Bold"/>
+
+            <Grid ColumnDefinitions="2*,*,Auto" ColumnSpacing="15" VerticalOptions="Start">
+
+                <VerticalStackLayout Grid.Column="0" ZIndex="10">
+                    <Label Text="Search Item Name"/>
+                    <Entry x:Name="SearchEntry" TextChanged="OnSearchTextChanged"/>
+
+                    <Label x:Name="AvailableStockLabel" TextColor="#218838" FontSize="12" Margin="0,5,0,0" IsVisible="False"/>
+
+                    <CollectionView x:Name="SearchResultsList" 
+                                    IsVisible="False" 
+                                    MaximumHeightRequest="150" 
+                                    SelectionMode="Single" 
+                                    SelectionChanged="OnItemSelected"
+                                    BackgroundColor="#F9FAFB">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="10" BorderColor="LightGray" CornerRadius="0" Margin="0">
+                                    <Label Text="{Binding Name}" TextColor="White" VerticalOptions="Center"/>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Quantity"/>
+                    <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                        <Entry x:Name="QuantityEntry" Keyboard="Numeric" WidthRequest="60"/>
+                        <Label x:Name="UnitLabel" Text="unit" TextColor="Gray" VerticalOptions="Center" IsVisible="False"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <Button Grid.Column="2" Text="+ Add to RIS" Clicked="OnAddItemClicked" BackgroundColor="LightGray" TextColor="Black" VerticalOptions="Start" HeightRequest="45" Margin="0,20,0,0"/>
+            </Grid>
+
+            <Label Text="Items to Withdraw:" FontAttributes="Bold" Margin="0,10,0,0"/>
+            <CollectionView x:Name="PendingRequestsList" Grid.Row="2" Margin="0,20,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="LightGray" Padding="15" Margin="0,5" BorderColor="LightGray" CornerRadius="8">
+                            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+
+                                <VerticalStackLayout Grid.Column="0" Grid.Row="0">
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" TextColor="Black"/>
+                                        <Label Text="-" TextColor="Gray" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Quantity}" FontAttributes="Bold" TextColor="#005A9E" FontSize="16"/>
+                                        <Label Text="{Binding Unit}" TextColor="Gray" VerticalOptions="Center"/>
+                                    </HorizontalStackLayout>
+
+                                    <Label Text="{Binding SupplierBreakdown}" FontSize="12" TextColor="DimGray" Margin="0,5,0,0"/>
+
+                                    <Label Text="{Binding FormattedTotalPrice}" FontSize="13" FontAttributes="Bold" TextColor="ForestGreen" Margin="0,2,0,0"/>
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1" Grid.Row="0" 
+                                    Text="✕" 
+                                    FontAttributes="Bold"
+                                    BackgroundColor="#DC3545" 
+                                    TextColor="White" 
+                                    WidthRequest="40" 
+                                    HeightRequest="40" 
+                                    CornerRadius="20"
+                                    VerticalOptions="Center"
+                                    CommandParameter="{Binding .}" 
+                                    Clicked="OnRemoveItemClicked" />
+
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Save Entire RIS Batch" 
+                    Clicked="OnConfirmClicked" 
+                    BackgroundColor="#005A9E" 
+                    TextColor="White" 
+                    HeightRequest="50"
+                    Margin="0,20,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

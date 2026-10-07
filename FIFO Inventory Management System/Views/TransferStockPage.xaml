@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIFO_Inventory_Management_System.Views.TransferStockPage"
+             Title="Stock Transfer">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="16">
+            <Label Text="Move stock (FIFO) from the active branch to another branch." FontSize="14" TextColor="Gray"/>
+
+           
+                <VerticalStackLayout>
+                    <Label Text="Transfer Number"/>
+                    <Entry x:Name="TransferNumberEntry"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <Label Text="Date"/>
+                    <DatePicker x:Name="TransferDatePicker"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <Label Text="Destination Branch"/>
+                    <Picker x:Name="DestinationPicker"/>
+                </VerticalStackLayout>
+           
+
+            <VerticalStackLayout>
+                <Label Text="Notes"/>
+                <Entry x:Name="NotesEntry"/>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1" Color="LightGray"/>
+
+            <Grid ColumnDefinitions="2*,*,Auto" ColumnSpacing="15">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Search item or barcode"/>
+                    <Entry x:Name="SearchEntry" TextChanged="OnSearchTextChanged"/>
+                    <CollectionView x:Name="SearchResultsList" IsVisible="False" MaximumHeightRequest="140"
+                                    SelectionMode="Single" SelectionChanged="OnItemSelected" BackgroundColor="#2A2A32">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding Name}" TextColor="White" Padding="10"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Quantity"/>
+                    <Entry x:Name="QuantityEntry" Keyboard="Numeric"/>
+                    <Label x:Name="AvailableStockLabel" FontSize="12" TextColor="#218838" IsVisible="False"/>
+                </VerticalStackLayout>
+                <Button Grid.Column="2" Text="Add" VerticalOptions="End" HeightRequest="40"
+                        Clicked="OnAddItemClicked" BackgroundColor="#005A9E" TextColor="White"/>
+            </Grid>
+
+            <CollectionView x:Name="PendingList" HeightRequest="180">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,2*,Auto,Auto" Padding="8">
+                            <Label Text="{Binding Item_Code}"/>
+                            <Label Grid.Column="1" Text="{Binding Name}"/>
+                            <Label Grid.Column="2" Text="{Binding Quantity, StringFormat='Qty {0}'}"/>
+                            <Button Grid.Column="3" Text="✕" BackgroundColor="#DC3545" TextColor="White"
+                                    WidthRequest="32" HeightRequest="32" Padding="0"
+                                    Clicked="OnRemoveClicked" CommandParameter="{Binding .}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Complete Transfer" Clicked="OnConfirmClicked"
+                    BackgroundColor="#218838" TextColor="White" HeightRequest="48"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

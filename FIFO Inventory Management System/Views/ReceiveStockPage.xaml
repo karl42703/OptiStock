@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIFO_Inventory_Management_System.Views.ReceiveStockPage"
+             Title="Receive Stock (PO)">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+
+            <Label Text="1. PO Header Details" FontSize="20" FontAttributes="Bold"/>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="15" ColumnSpacing="15">
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                    <Label Text="PO Number (Receipt #)"/>
+                    <Entry x:Name="PoNumberEntry"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                    <Label Text="Date Received"/>
+                    <DatePicker x:Name="DateReceivedPicker"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Label Text="Supplier Name"/>
+                    <Entry x:Name="SupplierEntry"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="LightGray" Margin="0,10"/>
+
+            <Label Text="2. Add Items to PO" FontSize="20" FontAttributes="Bold"/>
+
+            <!-- ITEM ENTRY GRID -->
+            <Grid ColumnDefinitions="*,2*,*,*,*,*" ColumnSpacing="10" VerticalOptions="End">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Item Code"/>
+                    <Entry x:Name="ItemCodeEntry"/>
+                </VerticalStackLayout>
+
+                <!-- UPDATED: SMART AUTOCOMPLETE FOR ITEM NAME -->
+                <VerticalStackLayout Grid.Column="1" ZIndex="10">
+                    <Label Text="Item Name"/>
+                    <Entry x:Name="NameEntry" TextChanged="OnItemNameTextChanged" Placeholder="Type to search..."/>
+
+                    <!-- The Hidden Dropdown Menu -->
+                    <Frame x:Name="SuggestionsFrame" 
+                           IsVisible="False" 
+                           BorderColor="#005A9E" 
+                           BackgroundColor="White"
+                           HasShadow="True" 
+                           Padding="0" 
+                           Margin="0,2,0,0" 
+                           CornerRadius="5" 
+                           MaximumHeightRequest="150">
+                        <CollectionView x:Name="SuggestionsList">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10,10" BackgroundColor="Transparent">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnSuggestionTapped" CommandParameter="{Binding .}" />
+                                        </Grid.GestureRecognizers>
+
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center"/>
+                                            <Label Text="-" TextColor="Gray" VerticalOptions="Center"/>
+                                            <Label Text="{Binding Item_Code}" FontSize="12" TextColor="Gray" VerticalOptions="Center"/>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2">
+                    <Label Text="Unit"/>
+                    <Entry x:Name="UnitEntry"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="3">
+                    <Label Text="Qty"/>
+                    <Entry x:Name="QuantityEntry" Keyboard="Numeric"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="4">
+                    <Label Text="Purchase Price"/>
+                    <Entry x:Name="PurchasePriceEntry" Keyboard="Numeric"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="5">
+                    <Label Text="Retail Price (₱)"/>
+                    <Entry x:Name="RetailPriceEntry" Keyboard="Numeric"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <Button Text="+ Add Item to List" Clicked="OnAddItemClicked" BackgroundColor="LightGray" TextColor="Black"/>
+
+            <Label Text="Pending Items:" FontAttributes="Bold" Margin="0,10,0,0"/>
+
+            <CollectionView x:Name="PendingItemsList" HeightRequest="150">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="0,5">
+                            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                                <Label Text="{Binding Item_Code}" FontAttributes="Bold" WidthRequest="60" VerticalOptions="Center"/>
+                                <Label Text="{Binding Name}" WidthRequest="150" VerticalOptions="Center"/>
+                                <Label Text="{Binding Unit, StringFormat='({0})'}" WidthRequest="80" VerticalOptions="Center"/>
+                                <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}" WidthRequest="80" VerticalOptions="Center"/>
+                                <Label Text="{Binding Unit_Price, StringFormat='Purch: ₱{0:F2}'}" VerticalOptions="Center" WidthRequest="100" />
+                                <Label Text="{Binding Retail_Price, StringFormat='Retail: ₱{0:F2}'}" VerticalOptions="Center" WidthRequest="100" />
+
+                                <Button Text="✕" 
+                                        TextColor="White" 
+                                        BackgroundColor="#DC3545" 
+                                        WidthRequest="30" 
+                                        HeightRequest="30" 
+                                        CornerRadius="15" 
+                                        Padding="0"
+                                        VerticalOptions="Center"
+                                        Clicked="OnRemovePendingItemClicked" 
+                                        CommandParameter="{Binding .}" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Save Entire PO" 
+                    Clicked="OnSavePOClicked" 
+                    BackgroundColor="#218838" 
+                    TextColor="White" 
+                    HeightRequest="50"
+                    Margin="0,20,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIFO_Inventory_Management_System.Views.ReportsPage"
+             Title="Reports">
+
+    <Grid RowDefinitions="Auto,*" Padding="24" RowSpacing="16">
+        <VerticalStackLayout Spacing="12">
+            <Label Text="Branch reports" FontSize="22" FontAttributes="Bold"/>
+            <Grid ColumnDefinitions="*,*,*,Auto,Auto" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="From" FontSize="12" TextColor="Gray"/>
+                    <DatePicker x:Name="FromDate"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="To" FontSize="12" TextColor="Gray"/>
+                    <DatePicker x:Name="ToDate"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="2">
+                    <Label Text="Low-stock threshold" FontSize="12" TextColor="Gray"/>
+                    <Entry x:Name="ThresholdEntry" Text="5" Keyboard="Numeric"/>
+                </VerticalStackLayout>
+                <Button Grid.Column="3" Text="Run reports" Clicked="OnRunClicked" BackgroundColor="#005A9E" TextColor="White" VerticalOptions="End"/>
+                <Button Grid.Column="4" Text="Print / Export HTML" Clicked="OnPrintClicked" BackgroundColor="#217346" TextColor="White" VerticalOptions="End"/>
+            </Grid>
+            <Label x:Name="SummaryLabel" FontSize="14" TextColor="#C8C8D0"/>
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="18">
+                <Label Text="Inventory valuation" FontAttributes="Bold"/>
+                <CollectionView x:Name="ValuationList" HeightRequest="180"/>
+                <Label Text="Sales / withdrawals in range" FontAttributes="Bold"/>
+                <CollectionView x:Name="SalesList" HeightRequest="180"/>
+                <Label Text="Low stock" FontAttributes="Bold"/>
+                <CollectionView x:Name="LowStockList" HeightRequest="140"/>
+                <Label Text="Stock transfers" FontAttributes="Bold"/>
+                <CollectionView x:Name="TransferList" HeightRequest="140"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
